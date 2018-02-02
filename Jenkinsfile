@@ -7,6 +7,7 @@ pipeline {
     }
     environment {
         CI = 'true'
+        FOO = "BAR"
     }
     parameters {
         string(name: 'DEPLOY_ENV', defaultValue: 'DEV', description: 'The target environment')
@@ -26,10 +27,19 @@ pipeline {
             }
         }
 
+        stage('FOO') {
+            steps {
+                sh 'echo "sh FOO is $FOO"'
+                echo "FOO is $FOO"
+                echo "Hello ${params.DEPLOY_ENV}"
+                sh 'echo "sh Hello ${params.DEPLOY_ENV}"'
+            }
+        }
+
         stage('Deliver') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
-                input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                // input message: 'Finished using the web site? (Click "Proceed" to continue)'
                 sh './jenkins/scripts/kill.sh'
             }
         }
