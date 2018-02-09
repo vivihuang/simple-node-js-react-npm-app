@@ -13,12 +13,12 @@ pipeline {
   }
   stages {
     stage('Checkout'){
-      node {
-        if (commitVersion.trim().equals('')) {
-          checkout scm
-        } else {
-          checkout "$commitVersion"
-        }
+      steps {
+        // if (commitVersion.trim().equals('')) {
+        //   checkout scm
+        // } else {
+          checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPO_URL]], branches: [[name: commitVersion]]], poll: false
+        // }
       }
     }
 
