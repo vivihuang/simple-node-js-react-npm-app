@@ -19,19 +19,13 @@ pipeline {
                 sh './jenkins/scripts/test.sh'
             }
         }
-        
-        stage('FOO') {
-            steps {
-                echo "FOO is $FOO"
-                echo "Hello ${params.DEPLOY_ENV}"
-            }
-        }
 
-        stage('Deliver') {
+        stage('Deploy to DEV') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
-                // input message: 'Finished using the web site? (Click "Proceed" to continue)'
-                sh './jenkins/scripts/kill.sh'
+                timeout(time: 30, unit: 'SECONDS') {
+                  sh './jenkins/scripts/kill.sh'
+                }
             }
         }
     }
