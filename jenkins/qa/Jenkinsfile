@@ -1,6 +1,8 @@
 def GIT_REPO_URL = 'https://github.com/vivihuang/simple-node-js-react-npm-app'
 def GIT_BRANCH = 'master'
 
+def commit_version = '8bd010e5e3791055984e37e311f1dc0562ff18a7'
+
 pipeline {
   agent {
     docker {
@@ -8,16 +10,16 @@ pipeline {
       args '-p 4000:4000'
     }
   }
-  parameters {
-    string(defaultValue: '', description: 'Please input git commit version.', name: 'commitVersion')
-  }
+  // parameters {
+  //   string(defaultValue: '', description: 'Please input git commit version.', name: 'commitVersion')
+  // }
   stages {
     stage('Checkout'){
       steps {
         // if (commitVersion.trim().equals('')) {
         //   checkout scm
         // } else {
-          checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPO_URL]], branches: [[name: commitVersion]]], poll: false
+          checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPO_URL]], branches: [[name: commit_version]]], poll: false
         // }
       }
     }
