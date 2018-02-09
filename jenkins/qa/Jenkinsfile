@@ -1,10 +1,38 @@
+def GIT_REPO_URL = 'https://github.com/vivihuang/simple-node-js-react-npm-app'
+def GIT_BRANCH = 'master'
+
 pipeline {
-    agent any
-    stages {
-        stage('Deploy to QA') {
-            steps {
-                echo 'Deployed'
-            }
-        }
+  agent {
+    docker {
+      image 'node:8-alpine'
+      args '-p 4000:4000'
     }
+  }
+  parameters {
+    string(defaultValue: '', description: 'Please input git commit version.', name: 'commitVersion')
+  }
+  stages {
+    stage('Checkout'){
+      steps {
+        checkout "$commitVersion"
+      }
+    }
+
+    stage('Build') {
+      steps {
+        sh 'node -v'
+        sh 'npm prune'
+        sh 'npm install'
+      }
+    }
+
+    stage('Deploy to QA') {
+      steps {
+        sh './jenkins/scripts/deliver.sh'
+        timeout(time: 3, unit: 'MINUTES') {
+          sh './jenkins/scripts/kill.sh'
+        }
+      }
+    }
+  }
 }
