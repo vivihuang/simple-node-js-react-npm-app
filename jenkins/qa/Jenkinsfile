@@ -3,7 +3,8 @@ def GIT_BRANCH = 'master'
 
 def commit_version = '7fc3dafdc89bee14120294e2a24911c8299e5654'
 echo "1........."
-echo $commit_version;
+echo commit_version;
+
 pipeline {
   agent {
     docker {
@@ -21,8 +22,8 @@ pipeline {
         //   checkout scm
         // } else {
         echo "2........."
-        echo $commit_version;
-        checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPO_URL]], branches: [[name: $commit_version]]], poll: false
+        echo commit_version;
+        checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPO_URL]], branches: [[name: commit_version]]], poll: false
         // }
       }
     }
