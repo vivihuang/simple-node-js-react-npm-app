@@ -5,13 +5,6 @@ pipeline {
             args '-p 3000:3000'
         }
     }
-    environment {
-        CI = 'true'
-        FOO = "BAR"
-    }
-    parameters {
-        string(name: 'DEPLOY_ENV', defaultValue: 'DEV', description: 'The target environment')
-    }
     stages {
         stage('Build') {
             steps {
@@ -26,13 +19,11 @@ pipeline {
                 sh './jenkins/scripts/test.sh'
             }
         }
-
+        
         stage('FOO') {
             steps {
-                sh 'echo "sh FOO is $FOO"'
                 echo "FOO is $FOO"
                 echo "Hello ${params.DEPLOY_ENV}"
-                sh 'echo "sh Hello ${params.DEPLOY_ENV}"'
             }
         }
 
