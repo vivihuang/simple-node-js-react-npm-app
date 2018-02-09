@@ -13,8 +13,12 @@ pipeline {
   }
   stages {
     stage('Checkout'){
-      steps {
-        checkout "$commitVersion"
+      node {
+        if (commitVersion.trim().equals('')) {
+          checkout scm
+        } else {
+          checkout "$commitVersion"
+        }
       }
     }
 
