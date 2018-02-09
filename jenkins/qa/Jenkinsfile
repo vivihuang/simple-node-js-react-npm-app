@@ -16,13 +16,15 @@ pipeline {
   stages {
     stage('Checkout'){
       steps {
-        // if (commitVersion.trim().equals('')) {
-        //   checkout scm
-        // } else {
-        echo 'fdfdfddsfdsfsd'
-        echo commit_version;
-        checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPO_URL]], branches: [[name: commit_version]]], poll: false
-        // }
+        script {
+          if (commit_version.trim().equals('')) {
+            checkout scm
+          } else {
+            echo 'fdfdfddsfdsfsd'
+            echo commit_version;
+            checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPO_URL]], branches: [[name: commit_version]]], poll: false
+          }
+        }
       }
     }
 
